@@ -1,0 +1,76 @@
+'打开阿芙尼尔，easy模式即可开始执行
+dim i = 0
+
+While True
+    loopOnce
+Wend
+EndScript
+
+
+Function loopOnce()
+	
+	KeepCapture 
+	If isMusicSelect() Then 
+		onMusicSelect 
+	ElseIf isMusicTap() Then
+		onMusicTap 
+	ElseIf isEndMusic() Then
+		onEndMusic 
+	Else 
+		Delay 500
+		TracePrint "空转" & i
+		i = i + 1
+	End If
+	ReleaseCapture
+End Function
+
+'歌曲选择界面
+Function isMusicSelect()
+    If CmpColorEx("157|158|21DF31,151|294|18DB21,884|380|18AA10,168|1526|DED39C,173|1687|FFFFFF",0.9) = 1 Then
+		isMusicSelect = True
+		TracePrint "isMusicSelect"
+	Else
+		isMusicSelect = False
+	End If
+End Function
+Function onMusicSelect()
+	MTap 175, 1633
+	Delay 10000
+End Function
+'打歌环节
+Function isMusicTap()
+	If CmpColorEx("103|475|3910BD,106|497|ADAAFF,88|483|7B71FF,1009|1807|E7CB4A,125|494|C64D63",0.9) = 1 Then
+		isMusicTap = True
+		TracePrint "isMusicTap"
+	Else
+		isMusicTap = False
+	End If
+End Function
+Function onMusicTap()
+	TracePrint "开始自动点击"
+	Dim starttime = Time()
+	Dim entime = starttime + 102
+	While entime - Time() > 0
+		MTap 208, 214
+		MTap 216, 1703
+	Wend
+	TracePrint "结束点击"
+End Function
+'结算页面
+Function isEndMusic()
+	If CmpColorEx("758|340|18AA10,765|759|29E74A,416|573|21DF29,98|957|B57921,99|1048|634D21",0.9) = 1 Then
+		isEndMusic = True
+		TracePrint "isEndMusic"
+	Else
+		isEndMusic = False
+	End If
+End Function
+Function onEndMusic()
+	MTap 145, 954
+	Delay 10000
+End Function
+Function MTap(x, y)
+    Dim rx = Int(((50+1) * Rnd()) + x - 25)
+    Dim ry = Int(((50+1) * Rnd()) + y - 25)
+    Touch rx, ry, 200
+End Function
